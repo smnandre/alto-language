@@ -42,3 +42,37 @@ $language = $registry->fromFilename('example.ts');
 
 `LanguageRegistry` exposes the same lookup, catalog, and relationship methods
 without global state. Prefer it in services that use dependency injection.
+
+## Check the lookup boundary
+
+This standalone example shows case and suffix behavior without reading any file:
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Alto\Language\Languages;
+
+foreach (['Dockerfile', 'dockerfile', 'home.html.twig', 'settings.unknown'] as $filename) {
+    printf("%s => %s\n", $filename, Languages::fromFilename($filename)?->slug ?? 'unknown');
+}
+printf("alias JS => %s\n", Languages::fromAlias('JS')?->slug);
+printf("extension .PHP => %s\n", Languages::fromExtension('.PHP')?->slug);
+```
+
+Output:
+
+```text
+Dockerfile => dockerfile
+dockerfile => unknown
+home.html.twig => twig
+settings.unknown => unknown
+alias JS => javascript
+extension .PHP => php
+```
+
+If a lookup returns `null`, choose an application fallback or register metadata
+for that language. Language does not examine content or calculate detection
+confidence; use content detection in a separate component if the filename is not
+enough.

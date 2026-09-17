@@ -39,6 +39,10 @@ describe common conventions; they are not a parser grammar.
 ## Register an application language
 
 ```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
 use Alto\Language\CodeMarkers;
 use Alto\Language\Language;
 use Alto\Language\LanguageRegistry;
@@ -55,6 +59,15 @@ $registry->register(new Language(
 ));
 
 $language = $registry->fromExtension('.myl');
+printf("%s (%s)\n", $language?->name, $language?->slug);
+echo json_encode($language?->markers->lineComments, JSON_THROW_ON_ERROR), "\n";
+```
+
+Output:
+
+```text
+My Language (my-language)
+["\/\/"]
 ```
 
 Bundled definitions are loaded lazily. A custom registration with the same
@@ -63,3 +76,7 @@ extension, alias, or filename.
 
 Inspect collisions with `$registry->conflicts()`. The result groups repeated
 keys under `extension`, `alias`, and `filename`.
+
+Keep application registries separate when one service should not see another
+service's custom definitions. Check `conflicts()` before choosing an ambiguous
+alias or extension. Registration changes lookup metadata, not a syntax parser.

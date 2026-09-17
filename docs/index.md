@@ -25,3 +25,9 @@ echo $language?->name; // PHP
 
 The package returns metadata. It does not inspect file contents or calculate a
 confidence score.
+
+## Package
+
+- [Changelog](https://github.com/altophp/language/blob/main/CHANGELOG.md)
+- [Contributing](https://github.com/altophp/language/blob/main/CONTRIBUTING.md)
+- [Support](https://github.com/altophp/language/blob/main/SUPPORT.md)
